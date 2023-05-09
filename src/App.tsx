@@ -1,6 +1,6 @@
 import "./App.css"
-import { motion } from "framer-motion"
-import { useRef, useState } from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { useRef, useState, FocusEvent } from "react"
 import imgUrl from "./assets/title.png"
 
 interface Option {
@@ -25,10 +25,11 @@ const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 }
 
 const App = () => {
     const [options, setOptions] = useState<Option[]>(initial)
-    const firstRef = useRef<any>(null)
-    const secondRef = useRef<any>(null)
+    const [isLock, setLock] = useState<boolean>(false)
+    const firstRef = useRef<HTMLInputElement>(null)
+    const secondRef = useRef<HTMLInputElement>(null)
 
-    const handleOnBlurInput = (e: any, id: number) => {
+    const handleOnBlurInput = (e: FocusEvent<HTMLInputElement>, id: number) => {
         const data = options.map((option) => {
             if (id === options[0].id) {
                 return {
@@ -60,10 +61,17 @@ const App = () => {
                 }
             })
         )
-        if (firstRef.current) {
+
+        if (firstRef.current && secondRef.current) {
             firstRef.current.value = ""
             secondRef.current.value = ""
         }
+
+        setLock(false)
+    }
+
+    const handleOnLock = () => {
+        setLock(true)
     }
 
     const animations = {
@@ -90,6 +98,7 @@ const App = () => {
                             name="options[]"
                             type="text"
                             ref={firstRef}
+                            disabled={isLock}
                             className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black py-4 px-2 outline-none text-xl font-semibold w-auto md:w-6/12 md:max-w-xl"
                         />
                     </div>
@@ -100,32 +109,55 @@ const App = () => {
                             name="options[]"
                             type="text"
                             ref={secondRef}
+                            disabled={isLock}
                             className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black  py-4 px-2 outline-none text-xl font-semibold  w-auto md:w-6/12 md:max-w-xl"
                         />
                     </div>
                     <div className="space-x-4">
-                        <motion.button
-                            key="tukar"
-                            whileHover={{
-                                scale: 1.1,
-                                transition: { duration: 0.5 },
-                            }}
-                            onClick={handleOnSwap}
-                            className="p-2 bg-[#00A08A] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
-                        >
-                            Tukar
-                        </motion.button>
-                        <motion.button
-                            key="semula"
-                            whileHover={{
-                                scale: 1.1,
-                                transition: { duration: 0.5 },
-                            }}
-                            onClick={handleOnReset}
-                            className="p-2 bg-[#5BBCD6] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
-                        >
-                            Semula
-                        </motion.button>
+                        <AnimatePresence>
+                            {!isLock && (
+                                <motion.button
+                                    key="tukar"
+                                    whileHover={{
+                                        scale: 1.1,
+                                        transition: { duration: 0.5 },
+                                    }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    onClick={handleOnSwap}
+                                    className="p-2 bg-[#00A08A] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                                >
+                                    Tukar
+                                </motion.button>
+                            )}
+                        </AnimatePresence>
+                        {!isLock && (
+                            <motion.button
+                                key="semula"
+                                whileHover={{
+                                    scale: 1.1,
+                                    transition: { duration: 0.5 },
+                                }}
+                                onClick={handleOnLock}
+                                className="p-2 bg-[#FF0000] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                            >
+                                Kunci
+                            </motion.button>
+                        )}
+                        {isLock && (
+                            <motion.button
+                                key="semula"
+                                whileHover={{
+                                    scale: 1.1,
+                                    transition: { duration: 0.5 },
+                                }}
+                                onClick={handleOnReset}
+                                className="p-2 bg-[#5BBCD6] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                            >
+                                Semula
+                            </motion.button>
+                        )}
                     </div>
                 </div>
             </div>
