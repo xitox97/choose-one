@@ -1,8 +1,8 @@
 import "./App.css"
 import { motion, AnimatePresence } from "framer-motion"
-import { useRef, useState, FocusEvent } from "react"
+import { useRef, useState, FocusEvent, useCallback } from "react"
 import imgUrl from "./assets/title.png"
-
+import { toPng } from "html-to-image"
 interface Option {
     id: number
     data: string
@@ -28,6 +28,7 @@ const App = () => {
     const [isLock, setLock] = useState<boolean>(false)
     const firstRef = useRef<HTMLInputElement>(null)
     const secondRef = useRef<HTMLInputElement>(null)
+    const ref = useRef<HTMLDivElement>(null)
 
     const handleOnBlurInput = (e: FocusEvent<HTMLInputElement>, id: number) => {
         const data = options.map((option) => {
@@ -74,6 +75,23 @@ const App = () => {
         setLock(true)
     }
 
+    const handleOnCapture = useCallback(() => {
+        if (ref.current === null) {
+            return
+        }
+
+        toPng(ref.current, { cacheBust: true })
+            .then((dataUrl) => {
+                const link = document.createElement("a")
+                link.download = "atas-bawah.png"
+                link.href = dataUrl
+                link.click()
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+    }, [ref])
+
     const animations = {
         layout: true,
         initial: "in",
@@ -85,12 +103,15 @@ const App = () => {
     }
 
     return (
-        <main className="min-h-screen flex justify-center items-center bg-[#F98400] text-center">
-            <div className="w-full m-4 px-4 pb-10 mn1                                       ">
+        <main
+            className="min-h-screen flex justify-center items-center bg-[#F98400] text-center"
+            ref={ref}
+        >
+            <div className="w-full m-4 px-4 pb-10">
                 <div className="flex justify-center">
                     <img src={imgUrl} className="h-48 md:h-56 w-auto" />
                 </div>
-                <div className="mt-10 flex flex-col space-y-4 md:space-y-6">
+                <div className="mt-10 flex flex-col space-y-5 md:space-y-6">
                     <div key={options[0].id}>
                         <motion.input
                             {...animations}
@@ -98,7 +119,7 @@ const App = () => {
                             name="options[]"
                             type="text"
                             ref={firstRef}
-                            disabled={isLock}
+                            readOnly={isLock}
                             className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black py-4 px-2 outline-none text-xl font-semibold w-auto md:w-6/12 md:max-w-xl"
                         />
                     </div>
@@ -109,7 +130,7 @@ const App = () => {
                             name="options[]"
                             type="text"
                             ref={secondRef}
-                            disabled={isLock}
+                            readOnly={isLock}
                             className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black  py-4 px-2 outline-none text-xl font-semibold  w-auto md:w-6/12 md:max-w-xl"
                         />
                     </div>
@@ -134,7 +155,7 @@ const App = () => {
                         </AnimatePresence>
                         {!isLock && (
                             <motion.button
-                                key="semula"
+                                key="kunci"
                                 whileHover={{
                                     scale: 1.1,
                                     transition: { duration: 0.5 },
@@ -158,6 +179,19 @@ const App = () => {
                                 Semula
                             </motion.button>
                         )}
+                    </div>
+                    <div>
+                        <motion.button
+                            key="simpan"
+                            whileHover={{
+                                scale: 1.1,
+                                transition: { duration: 0.5 },
+                            }}
+                            onClick={handleOnCapture}
+                            className="p-2 bg-[#F2AD00] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                        >
+                            Simpan
+                        </motion.button>
                     </div>
                 </div>
             </div>
