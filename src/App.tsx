@@ -2,7 +2,6 @@ import "./App.css"
 import { motion } from "framer-motion"
 import { useRef, useState } from "react"
 import imgUrl from "./assets/title.png"
-import ReactGA from "react-ga"
 
 interface Option {
     id: number
@@ -21,9 +20,6 @@ const initial = [
         data: "",
     },
 ]
-
-const TRACKING_ID = "G-81PKJFFYFP"
-ReactGA.initialize(TRACKING_ID)
 
 const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 }
 
