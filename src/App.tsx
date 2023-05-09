@@ -3,6 +3,12 @@ import { motion, AnimatePresence } from "framer-motion"
 import { useRef, useState, FocusEvent, useCallback } from "react"
 import imgUrl from "./assets/title.png"
 import { toPng } from "html-to-image"
+import {
+    HiArrowDownTray,
+    HiArrowPathRoundedSquare,
+    HiLockClosed,
+    HiArrowPath,
+} from "react-icons/hi2"
 interface Option {
     id: number
     data: string
@@ -104,12 +110,12 @@ const App = () => {
 
     return (
         <main
-            className="min-h-screen flex justify-center items-center bg-[#F98400] text-center"
+            className="flex min-h-screen items-center justify-center bg-[#F98400] text-center"
             ref={ref}
         >
-            <div className="w-full m-4 px-4 pb-10">
+            <div className="m-4 w-full px-4 pb-10">
                 <div className="flex justify-center">
-                    <img src={imgUrl} className="h-48 md:h-56 w-auto" />
+                    <img src={imgUrl} className="h-48 w-auto md:h-56" />
                 </div>
                 <div className="mt-10 flex flex-col space-y-5 md:space-y-6">
                     <div key={options[0].id}>
@@ -120,7 +126,7 @@ const App = () => {
                             type="text"
                             ref={firstRef}
                             readOnly={isLock}
-                            className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black py-4 px-2 outline-none text-xl font-semibold w-auto md:w-6/12 md:max-w-xl"
+                            className="w-auto rounded-lg border-b-8 border-l-2 border-r-8 border-t-2 border-black bg-[#F2AD00] px-2 py-4 text-center text-xl font-semibold shadow-lg outline-none md:w-6/12 md:max-w-xl"
                         />
                     </div>
                     <div key={options[1].id}>
@@ -131,7 +137,7 @@ const App = () => {
                             type="text"
                             ref={secondRef}
                             readOnly={isLock}
-                            className="bg-[#F2AD00] text-center shadow-lg rounded-lg border-b-8 border-r-8 border-l-2 border-t-2 border-black  py-4 px-2 outline-none text-xl font-semibold  w-auto md:w-6/12 md:max-w-xl"
+                            className="w-auto rounded-lg border-b-8 border-l-2 border-r-8 border-t-2 border-black bg-[#F2AD00] px-2 py-4  text-center text-xl font-semibold shadow-lg outline-none  md:w-6/12 md:max-w-xl "
                         />
                     </div>
                     <div className="space-x-4">
@@ -147,9 +153,12 @@ const App = () => {
                                     animate={{ opacity: 1 }}
                                     exit={{ opacity: 0 }}
                                     onClick={handleOnSwap}
-                                    className="p-2 bg-[#00A08A] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                                    className="w-32 rounded-lg border-b-4 border-l-2 border-r-4 border-t-2 border-black bg-[#00A08A] p-2 shadow-lg"
                                 >
-                                    Tukar
+                                    <p className="inline-flex items-center font-medium">
+                                        Tukar
+                                        <HiArrowPathRoundedSquare className="ml-1 h-6 w-auto" />
+                                    </p>
                                 </motion.button>
                             )}
                         </AnimatePresence>
@@ -161,9 +170,12 @@ const App = () => {
                                     transition: { duration: 0.5 },
                                 }}
                                 onClick={handleOnLock}
-                                className="p-2 bg-[#FF0000] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                                className="w-32 rounded-lg border-b-4 border-l-2 border-r-4 border-t-2 border-black bg-[#FF0000] p-2 font-medium shadow-lg"
                             >
-                                Kunci
+                                <p className="inline-flex items-center font-medium">
+                                    Kunci
+                                    <HiLockClosed className="ml-1 h-6 w-auto" />
+                                </p>
                             </motion.button>
                         )}
                         {isLock && (
@@ -174,9 +186,12 @@ const App = () => {
                                     transition: { duration: 0.5 },
                                 }}
                                 onClick={handleOnReset}
-                                className="p-2 bg-[#5BBCD6] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                                className="w-32 rounded-lg border-b-4 border-l-2 border-r-4 border-t-2 border-black bg-[#5BBCD6] p-2 font-medium shadow-lg"
                             >
-                                Semula
+                                <p className="inline-flex items-center font-medium">
+                                    Semula
+                                    <HiArrowPath className="ml-1 h-6 w-auto" />
+                                </p>
                             </motion.button>
                         )}
                     </div>
@@ -188,26 +203,29 @@ const App = () => {
                                 transition: { duration: 0.5 },
                             }}
                             onClick={handleOnCapture}
-                            className="p-2 bg-[#F2AD00] rounded-lg shadow-lg border-black border-t-2 border-l-2 border-r-4 border-b-4 w-32"
+                            className="w-32 rounded-lg border-b-4 border-l-2 border-r-4 border-t-2 border-black bg-[#F2AD00] p-2 shadow-lg"
                         >
-                            Simpan
+                            <p className="inline-flex items-center font-medium">
+                                Simpan
+                                <HiArrowDownTray className="ml-1 h-6 w-auto" />
+                            </p>
                         </motion.button>
                     </div>
                 </div>
             </div>
-            <div className="fixed bottom-0 left-0 w-full text-center pb-4">
-                <p className="font-medium text-sm font-mono">
+            <div className="fixed bottom-0 left-0 w-full pb-4 text-center">
+                <p className="font-mono text-sm font-medium">
                     Made with ❤️ by{" "}
                     <a
                         href="https://www.farhanhadi.com"
                         target="_blank"
-                        className="underline font-semibold"
+                        className="font-semibold underline"
                     >
                         Farhan
                     </a>
                 </p>
             </div>
-            <div className="fixed top-0 right-0 p-4">
+            <div className="fixed right-0 top-0 p-4">
                 <div className="flex flex-col space-y-2">
                     <a href="https://twitter.com/heyfarhanhadi" target="_blank">
                         <svg
