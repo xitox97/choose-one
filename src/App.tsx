@@ -86,7 +86,14 @@ const App = () => {
             return
         }
 
-        toPng(ref.current, { cacheBust: true })
+        const filter = (node: HTMLElement) => {
+            const exclusionClasses = ["socials"]
+            return !exclusionClasses.some((classname) =>
+                node.classList?.contains(classname)
+            )
+        }
+
+        toPng(ref.current, { cacheBust: true, filter: filter })
             .then((dataUrl) => {
                 const link = document.createElement("a")
                 link.download = "atas-bawah.png"
@@ -225,7 +232,7 @@ const App = () => {
                     </a>
                 </p>
             </div>
-            <div className="fixed right-0 top-0 p-4">
+            <div className="socials fixed right-0 top-0 p-4">
                 <div className="flex flex-col space-y-2">
                     <a href="https://twitter.com/heyfarhanhadi" target="_blank">
                         <svg
