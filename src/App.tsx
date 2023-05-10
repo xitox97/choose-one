@@ -1,10 +1,7 @@
 import "./App.css"
 import { motion, AnimatePresence } from "framer-motion"
-import { useRef, useState, FocusEvent, useCallback } from "react"
-// import imgUrl from "./assets/title.png"
-import { toPng } from "html-to-image"
+import { useRef, useState, FocusEvent } from "react"
 import {
-    HiArrowDownTray,
     HiArrowPathRoundedSquare,
     HiLockClosed,
     HiArrowPath,
@@ -81,30 +78,6 @@ const App = () => {
         setLock(true)
     }
 
-    const handleOnCapture = useCallback(() => {
-        if (ref.current === null) {
-            return
-        }
-
-        const filter = (node: HTMLElement) => {
-            const exclusionClasses = ["socials"]
-            return !exclusionClasses.some((classname) =>
-                node.classList?.contains(classname)
-            )
-        }
-
-        toPng(ref.current, { cacheBust: true, filter: filter })
-            .then((dataUrl) => {
-                const link = document.createElement("a")
-                link.download = "atas-bawah.png"
-                link.href = dataUrl
-                link.click()
-            })
-            .catch((err) => {
-                console.log(err)
-            })
-    }, [ref])
-
     const animations = {
         layout: true,
         initial: "in",
@@ -120,7 +93,7 @@ const App = () => {
             className="flex min-h-screen items-center justify-center bg-[#F98400] text-center"
             ref={ref}
         >
-            <div className="m-4 w-full px-4 pb-10">
+            <div className="m-4 w-full px-4 pb-16 md:pb-10">
                 <div className="flex justify-center">
                     <img src="/title.png" className="h-48 w-auto md:h-56" />
                 </div>
@@ -202,22 +175,6 @@ const App = () => {
                             </motion.button>
                         )}
                     </div>
-                    <div>
-                        <motion.button
-                            key="simpan"
-                            whileHover={{
-                                scale: 1.1,
-                                transition: { duration: 0.5 },
-                            }}
-                            onClick={handleOnCapture}
-                            className="w-32 rounded-lg border-b-4 border-l-2 border-r-4 border-t-2 border-black bg-[#F2AD00] p-2 shadow-lg"
-                        >
-                            <p className="inline-flex items-center font-medium">
-                                Simpan
-                                <HiArrowDownTray className="ml-1 h-6 w-auto" />
-                            </p>
-                        </motion.button>
-                    </div>
                 </div>
             </div>
             <div className="fixed bottom-0 left-0 w-full pb-4 text-center">
@@ -232,7 +189,7 @@ const App = () => {
                     </a>
                 </p>
             </div>
-            <div className="socials fixed right-0 top-0 p-4">
+            <div className="fixed right-0 top-0 p-4">
                 <div className="flex flex-col space-y-2">
                     <a href="https://twitter.com/heyfarhanhadi" target="_blank">
                         <svg
