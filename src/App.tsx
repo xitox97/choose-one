@@ -6,6 +6,7 @@ import {
     HiLockClosed,
     HiArrowPath,
 } from "react-icons/hi2"
+import Input from "./components/Input"
 interface Option {
     id: number
     data: string
@@ -23,8 +24,6 @@ const initial = [
         data: "",
     },
 ]
-
-const transition = { type: "spring", stiffness: 500, damping: 50, mass: 1 }
 
 const App = () => {
     const [options, setOptions] = useState<Option[]>(initial)
@@ -78,16 +77,6 @@ const App = () => {
         setLock(true)
     }
 
-    const animations = {
-        layout: true,
-        initial: "in",
-        animate: "in",
-        whileFocus: {
-            scale: 1.05,
-        },
-        transition,
-    }
-
     return (
         <main
             className="flex min-h-screen items-center justify-center bg-[#F98400] text-center"
@@ -99,25 +88,21 @@ const App = () => {
                 </div>
                 <div className="mt-10 flex flex-col space-y-5 md:space-y-6">
                     <div key={options[0].id}>
-                        <motion.input
-                            {...animations}
-                            onBlur={(e) => handleOnBlurInput(e, options[0].id)}
+                        <Input
+                            id={options[0].id}
+                            onBlur={handleOnBlurInput}
                             name="options[]"
-                            type="text"
-                            ref={firstRef}
-                            readOnly={isLock}
-                            className="w-auto rounded-lg border-b-8 border-l-2 border-r-8 border-t-2 border-black bg-[#F2AD00] px-2 py-4 text-center text-xl font-semibold shadow-lg outline-none md:w-6/12 md:max-w-xl"
+                            reference={firstRef}
+                            isLock={isLock}
                         />
                     </div>
                     <div key={options[1].id}>
-                        <motion.input
-                            {...animations}
-                            onBlur={(e) => handleOnBlurInput(e, options[1].id)}
+                        <Input
+                            id={options[1].id}
+                            onBlur={handleOnBlurInput}
                             name="options[]"
-                            type="text"
-                            ref={secondRef}
-                            readOnly={isLock}
-                            className="w-auto rounded-lg border-b-8 border-l-2 border-r-8 border-t-2 border-black bg-[#F2AD00] px-2 py-4  text-center text-xl font-semibold shadow-lg outline-none  md:w-6/12 md:max-w-xl "
+                            reference={secondRef}
+                            isLock={isLock}
                         />
                     </div>
                     <div className="space-x-4">
