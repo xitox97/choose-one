@@ -1,7 +1,7 @@
 import "./App.css"
 import { motion, AnimatePresence } from "framer-motion"
 import { useRef, useState, FocusEvent, useCallback } from "react"
-import imgUrl from "./assets/title.png"
+// import imgUrl from "./assets/title.png"
 import { toPng } from "html-to-image"
 import {
     HiArrowDownTray,
@@ -122,7 +122,7 @@ const App = () => {
         >
             <div className="m-4 w-full px-4 pb-10">
                 <div className="flex justify-center">
-                    <img src={imgUrl} className="h-48 w-auto md:h-56" />
+                    <img src="/title.png" className="h-48 w-auto md:h-56" />
                 </div>
                 <div className="mt-10 flex flex-col space-y-5 md:space-y-6">
                     <div key={options[0].id}>
